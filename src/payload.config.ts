@@ -14,9 +14,6 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-import { seoPlugin } from '@payloadcms/plugin-seo'
-import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { importExportPlugin } from '@payloadcms/plugin-import-export'
 
 const filename = fileURLToPath(import.meta.url)
@@ -73,18 +70,7 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
-    formBuilderPlugin({
-      // see below for a list of available options
-    }),
-    seoPlugin({
-      collections: ['pages'],
-      uploadsCollection: 'media',
-      generateTitle: ({ doc }) => `Website.com — ${doc.title}`,
-      generateDescription: ({ doc }) => doc.excerpt,
-    }),
-    redirectsPlugin({
-      collections: ['pages'],
-    }),
+    ...plugins,
     importExportPlugin({
       collections: [{ slug: 'users' }, { slug: 'pages' }],
       // see below for a list of available options
