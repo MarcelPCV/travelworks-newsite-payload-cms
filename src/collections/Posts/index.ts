@@ -146,14 +146,14 @@ export const Posts: CollectionConfig<'posts'> = {
             MetaTitleField({
               hasGenerateFn: true,
               localized: true,
-            }),
+            } as any),
             MetaImageField({
               relationTo: 'media',
             }),
 
             MetaDescriptionField({
               localized: true,
-            }),
+            } as any),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

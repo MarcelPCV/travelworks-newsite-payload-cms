@@ -66,7 +66,7 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [{ ...hero, localized: true }],
+          fields: [{ ...(hero as any), localized: true }],
           label: 'Hero',
         },
         {
@@ -96,14 +96,14 @@ export const Pages: CollectionConfig<'pages'> = {
             MetaTitleField({
               hasGenerateFn: true,
               localized: true,
-            }),
+            } as any),
             MetaImageField({
               relationTo: 'media',
             }),
 
             MetaDescriptionField({
               localized: true,
-            }),
+            } as any),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,
