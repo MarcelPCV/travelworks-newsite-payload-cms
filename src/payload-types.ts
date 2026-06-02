@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    clients: Client;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -95,6 +96,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    clients: ClientsSelect<false> | ClientsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -212,7 +214,19 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | CarouselBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | CarouselBlock
+    | IconsGridBlock
+    | BannerBenefitsShowcase
+    | ProductExperienceHighlight
+    | ClientShowcaseGallery
+    | NewsShowcaseGallery
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -832,6 +846,143 @@ export interface CarouselBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconsGridBlock".
+ */
+export interface IconsGridBlock {
+  title: string;
+  items: {
+    icon: number | Media;
+    title: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'icons-grid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBenefitsShowcase".
+ */
+export interface BannerBenefitsShowcase {
+  sectionTitle: string;
+  pillars?:
+    | {
+        icon: number | Media;
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        ctaText?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bannerBenefits';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductExperienceHighlight".
+ */
+export interface ProductExperienceHighlight {
+  features?:
+    | {
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        mockupImage: number | Media;
+        callToAction?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productExperienceHighlight';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClientShowcaseGallery".
+ */
+export interface ClientShowcaseGallery {
+  sectionTitle: string;
+  clientCollection: (number | Client)[];
+  sortBy?: ('most_recent' | 'alphabetical') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'clientGallery';
+}
+/**
+ * A gallery of our partner agencies and clients.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clients".
+ */
+export interface Client {
+  id: number;
+  agencyName: string;
+  logo: number | Media;
+  testimonial?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  managerName?: string | null;
+  videoLink?: string | null;
+  agencyWebsite?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsShowcaseGallery".
+ */
+export interface NewsShowcaseGallery {
+  sectionTitle: string;
+  featuredPosts: (number | Post)[];
+  sortBy?: ('most_recent' | 'featured' | 'alphabetical') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1107,6 +1258,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'clients';
+        value: number | Client;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1209,6 +1364,11 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         carousel?: T | CarouselBlockSelect<T>;
+        'icons-grid'?: T | IconsGridBlockSelect<T>;
+        bannerBenefits?: T | BannerBenefitsShowcaseSelect<T>;
+        productExperienceHighlight?: T | ProductExperienceHighlightSelect<T>;
+        clientGallery?: T | ClientShowcaseGallerySelect<T>;
+        newsShowcase?: T | NewsShowcaseGallerySelect<T>;
       };
   meta?:
     | T
@@ -1333,6 +1493,81 @@ export interface CarouselBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IconsGridBlock_select".
+ */
+export interface IconsGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBenefitsShowcase_select".
+ */
+export interface BannerBenefitsShowcaseSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  pillars?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        ctaText?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductExperienceHighlight_select".
+ */
+export interface ProductExperienceHighlightSelect<T extends boolean = true> {
+  features?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        mockupImage?: T;
+        callToAction?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClientShowcaseGallery_select".
+ */
+export interface ClientShowcaseGallerySelect<T extends boolean = true> {
+  sectionTitle?: T;
+  clientCollection?: T;
+  sortBy?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsShowcaseGallery_select".
+ */
+export interface NewsShowcaseGallerySelect<T extends boolean = true> {
+  sectionTitle?: T;
+  featuredPosts?: T;
+  sortBy?: T;
   id?: T;
   blockName?: T;
 }
@@ -1478,6 +1713,20 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clients_select".
+ */
+export interface ClientsSelect<T extends boolean = true> {
+  agencyName?: T;
+  logo?: T;
+  testimonial?: T;
+  managerName?: T;
+  videoLink?: T;
+  agencyWebsite?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1966,6 +2215,7 @@ export interface TaskCreateCollectionExport {
       | 'posts'
       | 'media'
       | 'categories'
+      | 'clients'
       | 'users'
       | 'redirects'
       | 'forms'

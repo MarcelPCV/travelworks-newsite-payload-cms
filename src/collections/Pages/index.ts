@@ -6,6 +6,11 @@ import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { Carousel } from '../../blocks/Carousel/config'
+import { IconsGrid } from '../../blocks/IconsGrid/config'
+import { ClientGalleryBlock } from '../../blocks/BannerClients/config'
+import { NewsShowcaseBlock } from '../../blocks/NewsShowcase/config'
+import { BannerBenefits } from '../../blocks/BannerBenefits/config'
+import { ProductExperienceHighlight } from '../../blocks/ProductExperienceHighlight/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { hero } from '@/heros/config'
@@ -74,7 +79,19 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, Carousel],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                Carousel,
+                IconsGrid,
+                BannerBenefits,
+                ProductExperienceHighlight,
+                ClientGalleryBlock, 
+                NewsShowcaseBlock,
+              ],
               localized: true,
               required: true,
               admin: {

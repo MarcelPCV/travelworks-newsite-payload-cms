@@ -1,4 +1,3 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -8,6 +7,7 @@ import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Clients } from './collections/Clients'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -15,6 +15,10 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { importExportPlugin } from '@payloadcms/plugin-import-export'
+import { resendAdapter } from '@payloadcms/email-resend'
+import { sentryPlugin } from '@payloadcms/plugin-sentry'
+import * as Sentry from '@sentry/nextjs'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -71,14 +75,17 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Clients, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
     ...plugins,
+    sentryPlugin({
+      Sentry,
+      enabled: Boolean(process.env.SENTRY_DSN),
+    }),
     importExportPlugin({
       collections: [{ slug: 'users' }, { slug: 'pages' }],
-      // see below for a list of available options
     }),
   ],
   secret: process.env.PAYLOAD_SECRET,
@@ -86,6 +93,11 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  email: resendAdapter({
+    defaultFromAddress: 'onboarding@resend.dev', // Use this exact address
+    defaultFromName: 'Travelworks Payload Test',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   jobs: {
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {
