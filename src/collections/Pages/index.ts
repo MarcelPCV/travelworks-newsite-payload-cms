@@ -68,6 +68,7 @@ export const Pages: CollectionConfig<'pages'> = {
       localized: true,
       required: true,
     },
+    hero,
     {
       type: 'tabs',
       tabs: [
@@ -86,7 +87,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 IconsGrid,
                 BannerBenefits,
                 ProductExperienceHighlight,
-                ClientGalleryBlock, 
+                ClientGalleryBlock,
                 NewsShowcaseBlock,
                 HeroPageBanner,
               ],
