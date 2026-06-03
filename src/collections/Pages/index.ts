@@ -10,6 +10,7 @@ import { IconsGrid } from '../../blocks/IconsGrid/config'
 import { ClientGalleryBlock } from '../../blocks/BannerClients/config'
 import { NewsShowcaseBlock } from '../../blocks/NewsShowcase/config'
 import { BannerBenefits } from '../../blocks/BannerBenefits/config'
+import { HeroPageBanner } from '../../blocks/HeroPageBanner/config'
 import { ProductExperienceHighlight } from '../../blocks/ProductExperienceHighlight/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
@@ -71,10 +72,6 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [{ ...(hero as any), localized: true }],
-          label: 'Hero',
-        },
-        {
           fields: [
             {
               name: 'layout',
@@ -91,6 +88,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ProductExperienceHighlight,
                 ClientGalleryBlock, 
                 NewsShowcaseBlock,
+                HeroPageBanner,
               ],
               localized: true,
               required: true,
