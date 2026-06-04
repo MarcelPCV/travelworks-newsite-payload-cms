@@ -1,16 +1,13 @@
 import type { Block } from 'payload'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BoldFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
 
-export const Carousel: Block = {
-  slug: 'carousel',
+export const CarouselBlock: Block = {
+  slug: 'carousel-block',
   interfaceName: 'CarouselBlock',
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      localized: true,
-    },
     {
       name: 'slides',
       type: 'array',
@@ -21,21 +18,22 @@ export const Carousel: Block = {
       },
       fields: [
         {
+          name: 'title',
+          type: 'richText',
+          label: 'Title',
+          required: true,
+          admin: {
+            description: 'Slide headline. Bold is the only inline style available.',
+          },
+          editor: lexicalEditor({
+            features: () => [BoldFeature(), InlineToolbarFeature()],
+          }),
+        },
+        {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
           required: true,
-        },
-        {
-          name: 'title',
-          type: 'text',
-          localized: true,
-          required: true,
-        },
-        {
-          name: 'description',
-          type: 'textarea',
-          localized: true,
         },
         {
           name: 'align',

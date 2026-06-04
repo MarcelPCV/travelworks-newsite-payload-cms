@@ -5,16 +5,15 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
-import { Carousel } from '../../blocks/Carousel/config'
 import { IconsGrid } from '../../blocks/IconsGrid/config'
 import { ClientGalleryBlock } from '../../blocks/BannerClients/config'
+import { CarouselBlock } from '../../blocks/Carousel/config'
 import { NewsShowcaseBlock } from '../../blocks/NewsShowcase/config'
 import { BannerBenefits } from '../../blocks/BannerBenefits/config'
 import { HeroPageBanner } from '../../blocks/HeroPageBanner/config'
 import { ProductExperienceHighlight } from '../../blocks/ProductExperienceHighlight/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -68,7 +67,6 @@ export const Pages: CollectionConfig<'pages'> = {
       localized: true,
       required: true,
     },
-    hero,
     {
       type: 'tabs',
       tabs: [
@@ -83,13 +81,13 @@ export const Pages: CollectionConfig<'pages'> = {
                 MediaBlock,
                 Archive,
                 FormBlock,
-                Carousel,
                 IconsGrid,
                 BannerBenefits,
                 ProductExperienceHighlight,
                 ClientGalleryBlock,
                 NewsShowcaseBlock,
                 HeroPageBanner,
+                CarouselBlock,
               ],
               localized: true,
               required: true,
