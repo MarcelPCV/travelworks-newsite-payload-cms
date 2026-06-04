@@ -18,6 +18,7 @@ import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { sentryPlugin } from '@payloadcms/plugin-sentry'
 import * as Sentry from '@sentry/nextjs'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 
 const filename = fileURLToPath(import.meta.url)
@@ -87,6 +88,16 @@ export default buildConfig({
     }),
     importExportPlugin({
       collections: [{ slug: 'users' }, { slug: 'pages' }],
+    }),
+    vercelBlobStorage({
+      enabled: Boolean(
+        process.env.BLOB_READ_WRITE_TOKEN &&
+        /^vercel_blob_rw_[^_]+_[a-zA-Z0-9]+$/.test(process.env.BLOB_READ_WRITE_TOKEN),
+      ),
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
   ],
   secret: process.env.PAYLOAD_SECRET,
